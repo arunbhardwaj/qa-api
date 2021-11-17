@@ -1,7 +1,7 @@
 {
-  "name": "project-catwalk",
+  "name": "qa-api",
   "version": "1.0.0",
-  "description": "front-end capstone",
+  "description": "",
   "main": "index.js",
   "jest": {
     "verbose": true,
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HR-NYC39-Macaw/project-catwalk.git"
+    "url": "git+https://github.com/sdc-emerald/qa-api.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HR-NYC39-Macaw/project-catwalk/issues"
+    "url": "https://github.com/sdc-emerald/qa-api/issues"
   },
-  "homepage": "https://github.com/HR-NYC39-Macaw/project-catwalk#readme",
+  "homepage": "https://github.com/sdc-emerald/qa-api#readme",
   "dependencies": {
     "axios": "^0.24.0",
     "compression": "^1.7.4",
@@ -32,9 +32,11 @@
     "jest": "^27.3.1",
     "jest-puppeteer": "^6.0.0",
     "jquery": "^3.6.0",
+    "mongoose": "^6.0.13",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.14",
     "path": "^0.12.7",
+    "pg": "^8.7.1",
     "prettier": "^2.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
