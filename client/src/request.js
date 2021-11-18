@@ -19,18 +19,10 @@ const LOCAL_API = {
  * @param {number} productId The product_id you want questions for.
  * @returns {Promise<any>} Promise object representing api results
  */
-// export function getAllQuestions(productId) {
-//   return axios({
-//     method: 'GET',
-//     url: LOCAL_API.questions,
-//     headers: header,
-//     params: {
-//       product_id: productId
-//     }
-//   })
-// }
 export function getAllQuestions(productId) {
-  return axios.get(LOCAL_API.questions, {
+  return axios({
+    method: 'GET',
+    url: LOCAL_API.questions,
     headers: header,
     params: {
       product_id: productId
