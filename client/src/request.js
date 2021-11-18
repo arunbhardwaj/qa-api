@@ -11,7 +11,7 @@ const HR_API = {
 
 
 const LOCAL_API = {
-  questions: 'https://localhost:3000/qa/questions'
+  questions: 'http://localhost:3000/qa/questions'
 }
 /**
  * Returns a promise that resolves to all questions for a given product.

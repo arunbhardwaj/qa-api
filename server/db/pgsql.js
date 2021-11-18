@@ -7,7 +7,7 @@ const pool = new Pool({
   host: 'localhost',
   database: 'qa',
   password: pass,
-  port: 3211
+  port: 5432
 });
 
 const client = new Client({
