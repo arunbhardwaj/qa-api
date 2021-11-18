@@ -5,6 +5,14 @@ const header = {
   Authorization: API_KEY,
 };
 
+const HR_API = {
+  questions: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions'
+}
+
+
+const LOCAL_API = {
+  questions: 'https://localhost:3000/qa/questions'
+}
 /**
  * Returns a promise that resolves to all questions for a given product.
  *
@@ -12,7 +20,7 @@ const header = {
  * @returns {Promise<any>} Promise object representing api results
  */
 export function getAllQuestions(productId) {
-  return axios.get('https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions', {
+  return axios.get(LOCAL_API.questions, {
     headers: header,
     params: {
       product_id: productId

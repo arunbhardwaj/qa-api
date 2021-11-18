@@ -15,7 +15,7 @@
 DROP TABLE IF EXISTS Questions CASCADE;
 
 CREATE TABLE Questions (
-  id SERIAL NOT NULL PRIMARY KEY,
+  id SERIAL NOT NULL PRIMARY KEY UNIQUE,
   question_body VARCHAR(1000) NOT NULL,
   question_date TIMESTAMPTZ NOT NULL,
   asker_name VARCHAR(60) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE Questions (
 DROP TABLE IF EXISTS Answers CASCADE;
 
 CREATE TABLE Answers (
-  id SERIAL NOT NULL PRIMARY KEY,
+  id SERIAL NOT NULL PRIMARY KEY UNIQUE,
   body VARCHAR(1000) NOT NULL,
   date TIMESTAMPTZ NOT NULL,
   answerer_name VARCHAR(60) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE Answers (
 DROP TABLE IF EXISTS Photos CASCADE;
 
 CREATE TABLE Photos (
-  id SERIAL NOT NULL PRIMARY KEY,
+  id SERIAL NOT NULL PRIMARY KEY UNIQUE,
   url VARCHAR(500) NOT NULL,
   answer_id INTEGER NOT NULL
 );
@@ -60,17 +60,17 @@ CREATE TABLE Photos (
 --
 -- ---
 
-DROP TABLE IF EXISTS Products CASCADE;
+-- DROP TABLE IF EXISTS Products CASCADE;
 
-CREATE TABLE Products (
-  id SERIAL NOT NULL PRIMARY KEY
-);
+-- CREATE TABLE Products (
+--   id SERIAL NOT NULL PRIMARY KEY UNIQUE
+-- );
 
 -- ---
 -- Foreign Keys
 -- ---
 
-ALTER TABLE Questions ADD FOREIGN KEY (product_id) REFERENCES Products (id);
+-- ALTER TABLE Questions ADD FOREIGN KEY (product_id) REFERENCES Products (id);
 ALTER TABLE Answers ADD FOREIGN KEY (question_id) REFERENCES Questions (id);
 ALTER TABLE Photos ADD FOREIGN KEY (answer_id) REFERENCES Answers (id);
 
@@ -92,3 +92,19 @@ ALTER TABLE Photos ADD FOREIGN KEY (answer_id) REFERENCES Answers (id);
 -- ('','','','','','','','');
 -- INSERT INTO Products (id) VALUES
 -- ('');
+
+
+COPY Questions(id, product_id, question_body, question_date, asker_name, asker_email, reported, question_helpfulness)
+FROM '/mnt/c/Users/Arun/Documents/Hack reactor/sdc csvs/questions.csv'
+DELIMITER ','
+CSV HEADER;
+
+COPY Answers(id, question_id, body, date, answerer_name, answerer_email, reported, helpfulness)
+FROM '/mnt/c/Users/Arun/Documents/Hack reactor/sdc csvs/answers.csv'
+DELIMITER ','
+CSV HEADER;
+
+COPY Photos(id, answer_id, url)
+FROM '/mnt/c/Users/Arun/Documents/Hack reactor/sdc csvs/answers_photos.csv'
+DELIMITER ','
+CSV HEADER;
