@@ -12,12 +12,12 @@
 --
 -- ---
 
-DROP TABLE IF EXISTS Questions CASCADE;
+-- DROP TABLE IF EXISTS Questions CASCADE;
 
 CREATE TABLE Questions (
   id SERIAL NOT NULL PRIMARY KEY UNIQUE,
   question_body VARCHAR(1000) NOT NULL,
-  question_date TIMESTAMPTZ NOT NULL,
+  question_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   asker_name VARCHAR(60) NOT NULL,
   asker_email VARCHAR(60) NOT NULL,
   question_helpfulness INTEGER NOT NULL DEFAULT 0,
@@ -30,12 +30,12 @@ CREATE TABLE Questions (
 --
 -- ---
 
-DROP TABLE IF EXISTS Answers CASCADE;
+-- DROP TABLE IF EXISTS Answers CASCADE;
 
 CREATE TABLE Answers (
   id SERIAL NOT NULL PRIMARY KEY UNIQUE,
   body VARCHAR(1000) NOT NULL,
-  date TIMESTAMPTZ NOT NULL,
+  date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   answerer_name VARCHAR(60) NOT NULL,
   answerer_email VARCHAR(60) NOT NULL,
   helpfulness INTEGER NOT NULL DEFAULT 0,
@@ -48,7 +48,7 @@ CREATE TABLE Answers (
 --
 -- ---
 
-DROP TABLE IF EXISTS Photos CASCADE;
+-- DROP TABLE IF EXISTS Photos CASCADE;
 
 CREATE TABLE Photos (
   id SERIAL NOT NULL PRIMARY KEY UNIQUE,
@@ -108,3 +108,20 @@ COPY Photos(id, answer_id, url)
 FROM '/mnt/c/Users/Arun/Documents/Hack reactor/sdc csvs/answers_photos.csv'
 DELIMITER ','
 CSV HEADER;
+
+-- ---
+-- Update the serial sequence counter
+-- ---
+BEGIN;
+-- protect against concurrent inserts while you update the counter
+LOCK TABLE Questions IN EXCLUSIVE MODE;
+LOCK TABLE Answers IN EXCLUSIVE MODE;
+LOCK TABLE Photos IN EXCLUSIVE MODE;
+-- Update the sequence
+SELECT setval('questions_id_seq', COALESCE((SELECT MAX(id)+1 FROM Questions), 1), false);
+SELECT setval('answers_id_seq', COALESCE((SELECT MAX(id)+1 FROM Answers), 1), false);
+SELECT setval('photos_id_seq', COALESCE((SELECT MAX(id)+1 FROM Photos), 1), false);
+COMMIT;
+
+CREATE INDEX idx_product_id ON Questions(product_id);
+CREATE INDEX idx_question_id ON Answers(question_id);
