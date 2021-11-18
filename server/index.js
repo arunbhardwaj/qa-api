@@ -19,9 +19,31 @@ app.get('/qa/questions', (req, res) => {
   db.api.getAllQuestions(39334, 1)
     .then((results) => {console.log(results); res.status(200).send(results)})
     .catch(err => {console.error(err); res.sendStatus(500)});
+})
 
-  // db.api.getPhotosForAnswer(5)
-  //   .then(results => console.log(results.rows));
+app.get('/qa/questions/:question_id/answers', (req, res) => {
+  let {question_id} = req.params;
+  console.log('Hit questionid/answers', question_id);
+})
+
+app.post('/qa/questions', (req, res) => {
+  console.log("POST /qa/questions");
+})
+
+app.post('/qa/questions/:question_id/answers', (req, res) => {
+  console.log("POST /qa/questions/:question_id/answers");
+})
+
+app.put('/qa/questions/:question_id/helpful', (req, res) => {
+  console.log("PUT /qa/questions/:question_id/helpful");
+})
+
+app.put('/qa/answers/:answer_id/helpful', (req, res) => {
+  console.log("PUT /qa/questions/:answer_id/helpful");
+})
+
+app.put('/qa/answers/:answer_id/report', (req, res) => {
+  console.log("PUT /qa/questions/:answer_id/helpful");
 })
 
 
