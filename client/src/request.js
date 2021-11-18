@@ -19,6 +19,16 @@ const LOCAL_API = {
  * @param {number} productId The product_id you want questions for.
  * @returns {Promise<any>} Promise object representing api results
  */
+// export function getAllQuestions(productId) {
+//   return axios({
+//     method: 'GET',
+//     url: LOCAL_API.questions,
+//     headers: header,
+//     params: {
+//       product_id: productId
+//     }
+//   })
+// }
 export function getAllQuestions(productId) {
   return axios.get(LOCAL_API.questions, {
     headers: header,
@@ -35,7 +45,11 @@ export function getAllQuestions(productId) {
  * @returns {Promise<any>} Promise object resolves to api results
  */
 export function postQuestion(data) {
-  return axios.post('https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/', data, {
+  return axios({
+    method: 'POST',
+    // url: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/',
+    url: 'http://localhost:3000/qa/questions/',
+    data: data,
     headers: header,
   })
 }
@@ -46,27 +60,29 @@ export function postQuestion(data) {
  * @returns
  */
 export function postAnswer(questionId, data) {
-  return axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/answers`, data, {
+  return axios({
+    method: 'POST',
+    // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/answers`,
+    url: `http://localhost:3000/qa/questions/${questionId}/answers`,
+    data: {...data, question_id: questionId},
     headers: header,
-    params: questionId
   })
 }
 
 export function updateQuestionHelpfulCount(questionId) {
-  return axios.put(
-    // `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/helpful`,
-    `http://localhost:3000/qa/questions/${questionId}/helpful`,
-    {},
-    {
-      headers: header
-    }
-  )
+  return axios({
+    method: 'PUT',
+    // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/helpful`,
+    url: `http://localhost:3000/qa/questions/${questionId}/helpful`,
+    headers: header
+  })
 }
 
 export function updateAnswerHelpfulCount(answerId) {
   return axios({
     method: 'PUT',
-    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/answers/${answerId}/helpful`,
+    // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/answers/${answerId}/helpful`,
+    url: `http://localhost:3000/qa/answers/${answerId}/helpful`,
     headers: header
   })
 }
