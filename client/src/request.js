@@ -6,7 +6,7 @@ const header = {
 };
 
 const HR_API = {
-  questions: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions'
+  questions: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions',
 }
 
 
@@ -53,13 +53,20 @@ export function postAnswer(questionId, data) {
 }
 
 export function updateQuestionHelpfulCount(questionId) {
-  return axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/helpful`, {}, {
-    headers: header
-  })
+  return axios.put(
+    // `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/helpful`,
+    `http://localhost:3000/qa/questions/${questionId}/helpful`,
+    {},
+    {
+      headers: header
+    }
+  )
 }
 
 export function updateAnswerHelpfulCount(answerId) {
-  return axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/answers/${answerId}/helpful`, {}, {
+  return axios({
+    method: 'PUT',
+    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/answers/${answerId}/helpful`,
     headers: header
   })
 }

@@ -36,8 +36,7 @@ module.exports.getAllQuestions = getAllQuestions
 async function getAnswersForQuestions(questionIds) {
   let results = []
   for (const questionId of questionIds) {
-    let result = await module.exports
-      .getAnswersForOneQuestion(questionId)
+    let result = await module.exports.getAnswersForOneQuestion(questionId)
     results.push(result)
   }
   return results
@@ -65,6 +64,20 @@ module.exports.getAnswersForOneQuestion = getAnswersForOneQuestion;
 module.exports.getPhotosForAnswer = (answerId) => {
   return pool.query({
     text: 'SELECT * FROM Photos WHERE answer_id = $1',
+    values: [answerId]
+  })
+}
+
+module.exports.updateQuestionHelpful = (questionId) => {
+  return pool.query({
+    text: 'UPDATE Questions SET question_helpfulness = question_helpfulness + 1 WHERE id = $1',
+    values: [questionId]
+  })
+}
+
+module.exports.updateAnswerHelpful = (answerId) => {
+  return pool.query({
+    text: 'UPDATE Answers SET helpfulness = helpfulness + 1 WHERE id = $1',
     values: [answerId]
   })
 }

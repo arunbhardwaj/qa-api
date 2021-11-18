@@ -35,7 +35,11 @@ app.post('/qa/questions/:question_id/answers', (req, res) => {
 })
 
 app.put('/qa/questions/:question_id/helpful', (req, res) => {
-  console.log("PUT /qa/questions/:question_id/helpful");
+  let {question_id} = req.params;
+  console.log(`PUT /qa/questions/${question_id}/helpful`);
+  db.api.updateQuestionHelpful(question_id)
+    .then(results => console.log(results.rows))
+    .catch(err => console.error(err));
 })
 
 app.put('/qa/answers/:answer_id/helpful', (req, res) => {
