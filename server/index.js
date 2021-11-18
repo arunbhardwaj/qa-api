@@ -9,6 +9,7 @@ const port = 3000;
 let app = express()
 
 app.use(morgan('dev'))
+app.use(express.json())
 app.use(express.static('client/dist'))
 
 app.listen(port, () => {
@@ -16,8 +17,9 @@ app.listen(port, () => {
 })
 
 app.get('/qa/questions', (req, res) => {
-  db.api.getAllQuestions(39334, 1)
-    .then((results) => {console.log(results); res.status(200).send(results)})
+  const {product_id} = req.query;
+  db.api.getAllQuestions(product_id, 1)
+    .then((results) => {res.status(200).send(results)})
     .catch(err => {console.error(err); res.sendStatus(500)});
 })
 
@@ -26,12 +28,19 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
   console.log('Hit questionid/answers', question_id);
 })
 
-app.post('/qa/questions', (req, res) => {
+app.post('/qa/questions', addTimeStamp, addQuestionMetaData, addReported, (req, res) => {
   console.log("POST /qa/questions");
+  db.api.saveQuestion(req.body)
+    .then(results => console.log(results.rows))
+    .catch(err => console.error(err));
 })
 
-app.post('/qa/questions/:question_id/answers', (req, res) => {
-  console.log("POST /qa/questions/:question_id/answers");
+app.post('/qa/questions/:question_id/answers', addTimeStamp, addAnswerMetaData, addReported, (req, res) => {
+  let {question_id} = req.params;
+  console.log(`POST /qa/questions/${question_id}/answers`);
+  db.api.saveAnswer(req.body)
+    .then(results => console.log(results.rows))
+    .catch(err => console.error(err));
 })
 
 app.put('/qa/questions/:question_id/helpful', (req, res) => {
@@ -43,13 +52,38 @@ app.put('/qa/questions/:question_id/helpful', (req, res) => {
 })
 
 app.put('/qa/answers/:answer_id/helpful', (req, res) => {
-  console.log("PUT /qa/questions/:answer_id/helpful");
+  let {answer_id} = req.params;
+  console.log(`PUT /qa/questions/${answer_id}/helpful`);
+  db.api.updateAnswerHelpful(answer_id)
+    .then(results => console.log('Successfully updated db.'))
+    .catch(err => console.error(err));
 })
 
 app.put('/qa/answers/:answer_id/report', (req, res) => {
-  console.log("PUT /qa/questions/:answer_id/helpful");
+  console.log("PUT /qa/questions/:answer_id/report");
 })
 
+
+function addTimeStamp(req, res, next) {
+  let time = new Date();
+  req.body['date'] = time;
+  next();
+}
+
+function addReported(req, res, next) {
+  req.body['reported'] = false;
+  next();
+}
+
+function addQuestionMetaData(req, res, next) {
+  req.body['question_helpfulness'] = 0;
+  next();
+}
+
+function addAnswerMetaData(req, res, next) {
+  req.body['helpfulness'] = 0;
+  next();
+}
 
 /*
 [
