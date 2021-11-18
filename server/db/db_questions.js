@@ -81,3 +81,38 @@ module.exports.updateAnswerHelpful = (answerId) => {
     values: [answerId]
   })
 }
+
+module.exports.saveQuestion = ({body, date, name, email, question_helpfulness, reported, product_id}) => {
+  return pool.query({
+    text: 'INSERT INTO Questions(question_body, question_date, asker_name, asker_email, question_helpfulness, reported, product_id) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+    values: [body, date, name, email, question_helpfulness, reported, product_id]
+  })
+  /*
+  id SERIAL NOT NULL PRIMARY KEY UNIQUE,
+  question_body VARCHAR(1000) NOT NULL,
+  question_date TIMESTAMPTZ NOT NULL,
+  asker_name VARCHAR(60) NOT NULL,
+  asker_email VARCHAR(60) NOT NULL,
+  question_helpfulness INTEGER NOT NULL DEFAULT 0,
+  reported BOOLEAN NOT NULL DEFAULT false,
+  product_id INTEGER NOT NULL
+  */
+}
+
+module.exports.saveAnswer = ({body, name, email, date, helpfulness, question_id, reported}) => {
+  return pool.query({
+    text: 'INSERT INTO Answers(body,date,answerer_name,answerer_email,helpfulness,question_id,reported) \
+      VALUES ($1,$2,$3,$4,$5,$6,$7)',
+    values: [body, date, name, email, helpfulness, question_id, reported]
+  })
+  /*
+  id SERIAL NOT NULL PRIMARY KEY UNIQUE,
+  body VARCHAR(1000) NOT NULL,
+  date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  answerer_name VARCHAR(60) NOT NULL,
+  answerer_email VARCHAR(60) NOT NULL,
+  helpfulness INTEGER NOT NULL DEFAULT 0,
+  question_id INTEGER NOT NULL,
+  reported BOOLEAN NOT NULL DEFAULT false
+  */
+}
