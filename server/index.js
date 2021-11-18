@@ -31,7 +31,7 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
 app.post('/qa/questions', addTimeStamp, addQuestionMetaData, addReported, (req, res) => {
   console.log("POST /qa/questions");
   db.api.saveQuestion(req.body)
-    .then(results => console.log(results.rows))
+    .then(results => res.status(201).send(results))
     .catch(err => console.error(err));
 })
 
@@ -39,7 +39,7 @@ app.post('/qa/questions/:question_id/answers', addTimeStamp, addAnswerMetaData, 
   let {question_id} = req.params;
   console.log(`POST /qa/questions/${question_id}/answers`);
   db.api.saveAnswer(req.body)
-    .then(results => console.log(results.rows))
+    .then(results => res.status(201).send(results))
     .catch(err => console.error(err));
 })
 
@@ -47,7 +47,7 @@ app.put('/qa/questions/:question_id/helpful', (req, res) => {
   let {question_id} = req.params;
   console.log(`PUT /qa/questions/${question_id}/helpful`);
   db.api.updateQuestionHelpful(question_id)
-    .then(results => console.log(results.rows))
+    .then(results => res.sendStatus(201))
     .catch(err => console.error(err));
 })
 
@@ -55,7 +55,7 @@ app.put('/qa/answers/:answer_id/helpful', (req, res) => {
   let {answer_id} = req.params;
   console.log(`PUT /qa/questions/${answer_id}/helpful`);
   db.api.updateAnswerHelpful(answer_id)
-    .then(results => console.log('Successfully updated db.'))
+    .then(results => res.sendStatus(201))
     .catch(err => console.error(err));
 })
 
