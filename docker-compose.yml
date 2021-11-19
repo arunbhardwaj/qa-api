@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  webserver:
+    image: haphnium/sdc-qa:0.8
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - db
+    ports:
+      - 5000:3000
+  db:
+    image: postgres:12.9-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: qa
+    volumes:
+      - ${HOME}/data/postgres-data/:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+# volumes:
+#   db-data:
+
+#
+# docker run \
+#   -dp 5432:5432 \
+#   --name dev-postgres \
+#   -e POSTGRES_PASSWORD=postgres \
+#   -v ${HOME}/data/postgres-data/:/var/lib/postgresql/data \
+#   postgres:12.9-alpine

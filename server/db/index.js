@@ -3,6 +3,6 @@ module.exports = {
   // etl: require('./etl.js'),
   pgClient: require('./pgsql.js').client,
   pgPool: require('./pgsql.js').pool,
-  mongodb: require('./nosql.js'),
+  // mongodb: require('./nosql.js'),
   api: require('./db_questions.js')
 }
