@@ -13,6 +13,10 @@ const HR_API = {
 const LOCAL_API = {
   questions: 'http://localhost:3000/qa/questions'
 }
+
+///////////////////////////////////////////////////////
+// Questions                               ////////////
+///////////////////////////////////////////////////////
 /**
  * Returns a promise that resolves to all questions for a given product.
  *
@@ -40,7 +44,7 @@ export function postQuestion(data) {
   return axios({
     method: 'POST',
     // url: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/',
-    url: 'http://localhost:3000/qa/questions/',
+    url: LOCAL_API.questions,
     data: data,
     headers: header,
   })
@@ -55,7 +59,7 @@ export function postAnswer(questionId, data) {
   return axios({
     method: 'POST',
     // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/answers`,
-    url: `http://localhost:3000/qa/questions/${questionId}/answers`,
+    url: LOCAL_API.questions + `/${questionId}/answers`,
     data: {...data, question_id: questionId},
     headers: header,
   })
@@ -65,7 +69,7 @@ export function updateQuestionHelpfulCount(questionId) {
   return axios({
     method: 'PUT',
     // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/helpful`,
-    url: `http://localhost:3000/qa/questions/${questionId}/helpful`,
+    url: LOCAL_API.questions + `/${questionId}/helpful`,
     headers: header
   })
 }
@@ -79,6 +83,10 @@ export function updateAnswerHelpfulCount(answerId) {
   })
 }
 
+
+///////////////////////////////////////////////////////
+// REVIEWS                               //////////////
+///////////////////////////////////////////////////////
 export function getProductReviewMeta(productId) {
   const url = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/reviews/meta/?product_id=${productId}`
   return axios.get(url, {

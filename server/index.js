@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 // const pgClient = require('./db').pgClient
 // const pgPool = require('./db').pgPool
 const db = require('./db')
@@ -8,6 +9,7 @@ const port = process.env.PORT || 3000;
 
 let app = express()
 
+app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.static('client/dist'))
@@ -18,8 +20,9 @@ app.listen(port, () => {
 
 app.get('/qa/questions', (req, res) => {
   const {product_id} = req.query;
-  db.api.getAllQuestions(product_id, 1)
-    .then((results) => {res.status(200).send(results)})
+  console.log('GET /qa/questions >', req.query)
+  db.api.getAllQuestions(product_id)
+    .then((results) => {console.log(results); res.status(200).send(results)})
     .catch(err => {console.error(err); res.sendStatus(500)});
 })
 
@@ -84,6 +87,12 @@ function addAnswerMetaData(req, res, next) {
   req.body['helpfulness'] = 0;
   next();
 }
+
+// function cors(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "localhost"); // update to match the domain you will make the request from
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// }
 
 /*
 [

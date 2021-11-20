@@ -15,7 +15,7 @@ class App extends React.Component {
     this.state = {
       product_id:
         // 39334
-        40212,
+        1,
     }
     this.handleProductChange = this.handleProductChange.bind(this)
   }

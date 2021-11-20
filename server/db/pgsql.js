@@ -20,20 +20,21 @@ const pool = new Pool({
   port: 5432
 });
 
-// For docker container
+// // FOR DOCKER CONTAINERS
 // const client = new Client({
 //   user: 'postgres',
 //   host: 'db',
-//   database: 'qa',
+//   database: 'postgres',
 //   password: 'postgres',
 //   port: 5432 //default port
+//   // http://location.hostname:port/
 // })
 
 // // Do I need retry logic with pools?
 // const pool = new Pool({
 //   user: 'postgres',
 //   host: 'db',
-//   database: 'qa',
+//   database: 'postgres',
 //   password: 'postgres',
 //   port: 5432
 // });
@@ -42,7 +43,6 @@ const startServers = async () => {
   let retries = 5;
   while (retries) {
     try {
-      // will await throw an error if it fails?
       await client.connect()
       console.log("Connected to postgres.");
       break;

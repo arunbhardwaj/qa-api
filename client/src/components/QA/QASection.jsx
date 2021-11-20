@@ -17,9 +17,11 @@ const QASection = ({productId}) => {
   }, [productId])
 
   useEffect(() => {
+    console.log('in use effect on page load > productid:', productId)
     console.log(product_id)
     getAllQuestions(productId)
       .then(results => {
+        console.log(results);
         setQuestions(results.data.results); // Already sorted by Question Helpfulness
       })
       .catch(err =>
