@@ -1,6 +1,7 @@
 module.exports = {
-  POSTGRES_USER: process.env.POSTGRES_USER || 'postgres',
-  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || 'postgres',
-  POSTGRES_IP: process.env.POSTGRES_IP || 'db',
-  POSTGRES_PORT: process.env.POSTGRES_PORT || '5432'
+  POSTGRES_USER: process.env.PGUSER || 'postgres',
+  POSTGRES_PASSWORD: process.env.PGPASSWORD || 'postgres',
+  POSTGRES_HOST: process.env.PGHOST || 'localhost',
+  POSTGRES_DB: process.env.PGDATABASE || 'postgres',
+  POSTGRES_PORT: process.env.PGPORT || '5432'
 }

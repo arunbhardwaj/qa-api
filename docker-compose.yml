@@ -8,13 +8,19 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: development
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGHOST: db
+      PGDATABASE: qa
+      PGPORT: 5432
+      ISDOCKER: true
     volumes:
       - ./:/usr/src/app:ro #bind mount
       - /usr/src/app/node_modules
     depends_on:
       - db
     ports:
-      - 5000:3000
+      - 3000:3000
   db:
     # image: haphnium/mypostgres
     build:

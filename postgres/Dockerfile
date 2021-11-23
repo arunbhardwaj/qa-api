@@ -10,8 +10,6 @@ COPY . .
 # ENV PORT=5432
 # EXPOSE 5432
 # RUN chown -R node /app # Learn more about other fixes for permission issues
-# USER node
-# CMD ["node", "server/index.js"]
 # USER postgres
-# RUN psql -U postgres qa -f schema.sql
-CMD ["postgres"]
+# RUN psql -U postgres qa -f /app/schema.sql
+# CMD ["postgres"]
