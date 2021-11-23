@@ -12,9 +12,12 @@ const HR_API = {
 
 const LOCAL_API = {
   questions: 'http://localhost:3000/qa/questions',
-  // For Docker, I have to hit 5000 and not port 3000...why?
-  // Exposing port 3000 doesn't work. client requests must go to localhost > port 5000
-  // and cannot go to webserver > 3000 or localhost > 3000
+  // For Docker, it seems the request leaves the container and the host,
+  // so it has to reenter from the host side rather than the container side.
+  // E.g. client requests must go to localhost > port 3000
+  // and cannot go to webserver > 3000.
+  // Prior to this I was using 5000:3000 port forwarding
+  // and client had to connect to localhost > 5000 instead of > 3000.
 }
 
 ///////////////////////////////////////////////////////
