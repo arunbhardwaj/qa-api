@@ -9,19 +9,22 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: development
+    # volumes:
+    #   - ./:/usr/src/app #bind mount
+    #   - /usr/src/app/node_modules
     depends_on:
       - db
     ports:
       - 5000:3000
   db:
-    container_name: backend-postgres
+    # container_name: backend-postgres
     image: haphnium/mypostgres
     build:
       context: ./postgres
       dockerfile: ./Dockerfile
     environment:
-      POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: qa
     volumes:
       - pgdata:/var/lib/postgresql/data
