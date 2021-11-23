@@ -1,8 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-// const pgClient = require('./db').pgClient
-// const pgPool = require('./db').pgPool
 const db = require('./db')
 
 const port = process.env.PORT || 3000;
@@ -22,7 +20,7 @@ app.get('/qa/questions', (req, res) => {
   const {product_id} = req.query;
   console.log('GET /qa/questions >', req.query)
   db.api.getAllQuestions(product_id)
-    .then((results) => {console.log(results); res.status(200).send(results)})
+    .then(results => res.status(200).send(results))
     .catch(err => {console.error(err); res.sendStatus(500)});
 })
 

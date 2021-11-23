@@ -7,11 +7,11 @@ WORKDIR /app
 COPY . .
 # RUN psql -U postgres TODO: have it import and run script schema file.
 # But first figure out how to enter into the postgres without prompts?
-ENV PORT=5432
-EXPOSE 5432
+# ENV PORT=5432
+# EXPOSE 5432
 # RUN chown -R node /app # Learn more about other fixes for permission issues
 # USER node
 # CMD ["node", "server/index.js"]
-USER postgres
+# USER postgres
 # RUN psql -U postgres qa -f schema.sql
 CMD ["postgres"]

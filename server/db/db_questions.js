@@ -1,7 +1,7 @@
 const { client, pool } = require('./pgsql.js')
 const { questionResFormatter } = require('./responseFormatters.js');
 
-async function getAllQuestions(productId, page = 1, count = 5) {
+async function getAllQuestions(productId, page=1, count=5) {
   let query = {
     text: 'SELECT * FROM Questions WHERE product_id = $1 ORDER BY question_helpfulness DESC LIMIT $2',
     // 'SELECT \

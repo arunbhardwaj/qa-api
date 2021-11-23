@@ -11,7 +11,10 @@ const HR_API = {
 
 
 const LOCAL_API = {
-  questions: 'http://localhost:3000/qa/questions'
+  questions: 'http://localhost:5000/qa/questions',
+  // I have to hit 5000 and not port 3000...why?
+  // Exposing port 3000 doesn't work. client requests must go to localhost > port 5000
+  // and cannot go to webserver > 3000 or localhost > 3000
 }
 
 ///////////////////////////////////////////////////////

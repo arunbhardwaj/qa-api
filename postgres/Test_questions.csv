@@ -28,3 +28,10 @@ id, product_id, body, date_written, asker_name, asker_email, reported, helpful
 27,3,"What fabric is the back made of?","2018-04-12","wildchild","first.last@gmail.com",0,5
 28,3,"Can I wash it?","2019-11-17","coolkid","first.last@cbs.com",1,6
 29,3,"What fabric is the top made of?","2018-11-08","wonderwoman","first.last@gmail.com",0,5
+30,3,"Why is this product cheaper here than other sites?","2018-07-28","l33tgamer","first.last@gmail.com",0,4
+31,4,"Where is this product made?","2017-02-06","cleopatra","first.last@gmail.com",0,2
+32,4,"What fabric is the bottom made of?","2018-09-12","iluvcatz","first.last@gmail.com",0,7
+33,4,"Why is this product cheaper here than other sites?","2017-08-12","toofast","first.last@gmail.com",0,4
+34,5,"Can I wash it?","2017-01-04","luaulover","first.last@cbs.com",0,1
+35,5,"Where is this product made?","2018-07-06","bballfan","first.last@gmail.com",0,0
+36,5,"What fabric is the top made of?","2018-06-17","funnygirl","first.last@gmail.com",0,1

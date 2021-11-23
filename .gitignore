@@ -76,8 +76,8 @@ bundle.js
 .vuepress/dist
 
 
-# Github API Key
-config.js
+# Github API Key => only ignore config js in current dir, not sub directories.
+/config.js
 
 # DS_Store
 .DS_Store

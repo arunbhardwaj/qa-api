@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest --watch",
     "test-coverage": "jest --coverage",
-    "server-dev": "npx nodemon server/index.js",
+    "server-dev": "nodemon server/index.js",
     "react-dev": "webpack --mode development --watch"
   },
   "repository": {
