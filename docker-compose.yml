@@ -37,11 +37,3 @@ services:
 
 volumes:
   pgdata:
-
-#
-# docker run \
-#   -dp 5432:5432 \
-#   --name dev-postgres \
-#   -e POSTGRES_PASSWORD=postgres \
-#   -v ${HOME}/data/postgres-data/:/var/lib/postgresql/data \
-#   postgres:12.9-alpine
