@@ -84,3 +84,6 @@ bundle.js
 
 #tests
 ./tests/*
+
+# any random files
+**random*
