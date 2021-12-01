@@ -1,5 +1,6 @@
 const {Pool, Client} = require('pg');
 const pass = require('../../config.js').pass;
+// you can probably just require it anyway
 if (process.env.ISDOCKER !== 'true') {
   require('dotenv').config();
 }
