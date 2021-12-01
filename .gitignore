@@ -83,7 +83,7 @@ bundle.js
 .DS_Store
 
 #tests
-./tests/*
+tests/*
 
 # any random files
 **random*
