@@ -6,23 +6,20 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
     environment:
-      NODE_ENV: development
+      PORT: 3000
       PGUSER: postgres
       PGPASSWORD: postgres
       PGHOST: db
       PGDATABASE: qa
       PGPORT: 5432
-      ISDOCKER: true
-    volumes:
-      - ./:/usr/src/app:ro #bind mount
-      - /usr/src/app/node_modules
+      ISDOCKER: "true"
     depends_on:
       - db
-    ports:
-      - 3000:3000
   db:
-    # image: haphnium/mypostgres
+    image: haphnium/mypostgres
     build:
       context: ./postgres
       dockerfile: ./Dockerfile
@@ -37,3 +34,13 @@ services:
 
 volumes:
   pgdata:
+
+
+# services:
+#   webserver:
+#     image: haphnium/sdc-qa:0.8
+#     build:
+#       context: .
+#       dockerfile: ./Dockerfile
+#     ports:
+#       - 3000:3000

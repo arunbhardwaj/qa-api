@@ -7,11 +7,13 @@ const header = {
 
 const HR_API = {
   questions: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions',
+  answers: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/answers',
 }
 
 
 const LOCAL_API = {
   questions: 'http://localhost:3000/qa/questions',
+  answers: 'http://localhost:3000/qa/answers',
   // For Docker, it seems the request leaves the container and the host,
   // so it has to reenter from the host side rather than the container side.
   // E.g. client requests must go to localhost > port 3000
@@ -19,6 +21,14 @@ const LOCAL_API = {
   // Prior to this I was using 5000:3000 port forwarding
   // and client had to connect to localhost > 5000 instead of > 3000.
 }
+
+const EC2_API = {
+  questions: 'http://ec2-3-82-220-49.compute-1.amazonaws.com/qa/questions',
+  answers: 'http://ec2-3-82-220-49.compute-1.amazonaws.com/qa/answers',
+}
+
+// CHANGE THIS TO CHANGE THE ENDPOINT OF ALL THE FUNCTIONS.
+const ENDPOINT = LOCAL_API;
 
 ///////////////////////////////////////////////////////
 // Questions                               ////////////
@@ -32,7 +42,7 @@ const LOCAL_API = {
 export function getAllQuestions(productId) {
   return axios({
     method: 'GET',
-    url: LOCAL_API.questions,
+    url: ENDPOINT.questions,
     headers: header,
     params: {
       product_id: productId
@@ -49,8 +59,7 @@ export function getAllQuestions(productId) {
 export function postQuestion(data) {
   return axios({
     method: 'POST',
-    // url: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/',
-    url: LOCAL_API.questions,
+    url: ENDPOINT.questions,
     data: data,
     headers: header,
   })
@@ -64,8 +73,7 @@ export function postQuestion(data) {
 export function postAnswer(questionId, data) {
   return axios({
     method: 'POST',
-    // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/answers`,
-    url: LOCAL_API.questions + `/${questionId}/answers`,
+    url: `${ENDPOINT.questions}/${questionId}/answers`,
     data: {...data, question_id: questionId},
     headers: header,
   })
@@ -74,8 +82,7 @@ export function postAnswer(questionId, data) {
 export function updateQuestionHelpfulCount(questionId) {
   return axios({
     method: 'PUT',
-    // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/helpful`,
-    url: LOCAL_API.questions + `/${questionId}/helpful`,
+    url: `${ENDPOINT.questions}/${questionId}/helpful`,
     headers: header
   })
 }
@@ -83,8 +90,7 @@ export function updateQuestionHelpfulCount(questionId) {
 export function updateAnswerHelpfulCount(answerId) {
   return axios({
     method: 'PUT',
-    // url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/answers/${answerId}/helpful`,
-    url: `http://localhost:3000/qa/answers/${answerId}/helpful`,
+    url: `${ENDPOINT.answers}/${answerId}/helpful`,
     headers: header
   })
 }
