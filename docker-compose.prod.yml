@@ -1,0 +1,7 @@
+version: '3.4'
+
+services:
+  webserver:
+    environment:
+      NODE_ENV: production
+    command: npm run server
