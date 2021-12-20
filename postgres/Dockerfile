@@ -1,10 +1,9 @@
 FROM postgres:12.9-alpine
-# ENV NODE_ENV=production
-
 WORKDIR /app
 # RUN apk update
 # RUN apk add postgresql
 COPY . .
+EXPOSE 5432
 # RUN psql -U postgres TODO: have it import and run script schema file.
 # But first figure out how to enter into the postgres without prompts?
 # ENV PORT=5432

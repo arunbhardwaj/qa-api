@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   webserver:
-    image: haphnium/sdc-qa:0.8
+    image: haphnium/qa-server
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
   db:
-    image: haphnium/mypostgres
+    image: haphnium/qa-db
     build:
       context: ./postgres
       dockerfile: ./Dockerfile
@@ -34,13 +34,3 @@ services:
 
 volumes:
   pgdata:
-
-
-# services:
-#   webserver:
-#     image: haphnium/sdc-qa:0.8
-#     build:
-#       context: .
-#       dockerfile: ./Dockerfile
-#     ports:
-#       - 3000:3000
