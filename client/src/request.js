@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {API_KEY} from '../../config.js';
+import {API_KEY} from './config.js';
 
 const header = {
   Authorization: API_KEY,
