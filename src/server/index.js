@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+require('dotenv').config(); // Load custom environment variables.
 const db = require('../database')
 
 const port = process.env.PORT || 3000;
@@ -17,55 +18,50 @@ app.listen(port, () => {
 })
 
 app.get('/qa/questions', (req, res) => {
-  console.log('hit');
-  const {product_id} = req.query;
-  console.log('GET /qa/questions >', req.query)
+  const { product_id } = req.query;
   db.api.getAllQuestions(product_id)
     .then(results => {res.status(200).send(results);})
     .catch(err => {console.error(err); res.sendStatus(500)});
 })
 
 app.get('/qa/questions/:question_id/answers', (req, res) => {
-  let {question_id} = req.params;
-  console.log('Hit questionid/answers', question_id);
+  let { question_id } = req.params;
   db.api.getAllAnswersForOneQuestion(question_id)
     .then(results => res.status(200).send(results))
     .catch(err => {console.error(err); res.sendStatus(500)});
 })
 
 app.post('/qa/questions', addTimeStamp, addQuestionMetaData, addReported, (req, res) => {
-  console.log("POST /qa/questions");
   db.api.saveQuestion(req.body)
     .then(results => res.status(201).send(results))
-    .catch(err => console.error(err));
+    .catch(err => {console.error(err); res.status(400).send("Invalid request syntax.")});
 })
 
 app.post('/qa/questions/:question_id/answers', addTimeStamp, addAnswerMetaData, addReported, (req, res) => {
-  let {question_id} = req.params;
-  console.log(`POST /qa/questions/${question_id}/answers`);
+  let { question_id } = req.params;
   db.api.saveAnswer(req.body)
     .then(results => res.status(201).send(results))
-    .catch(err => console.error(err));
+    .catch(err => {console.error(err); res.status(400).send("Invalid request syntax.")});
 })
 
 app.put('/qa/questions/:question_id/helpful', (req, res) => {
-  let {question_id} = req.params;
-  console.log(`PUT /qa/questions/${question_id}/helpful`);
+  let { question_id } = req.params;
   db.api.updateQuestionHelpful(question_id)
     .then(results => res.sendStatus(201))
-    .catch(err => console.error(err));
+    .catch(err => {console.error(err); res.status(404).send()});
 })
 
 app.put('/qa/answers/:answer_id/helpful', (req, res) => {
-  let {answer_id} = req.params;
-  console.log(`PUT /qa/questions/${answer_id}/helpful`);
+  let { answer_id } = req.params;
   db.api.updateAnswerHelpful(answer_id)
     .then(results => res.sendStatus(201))
-    .catch(err => console.error(err));
+    .catch(err => {console.error(err); res.status(404).send()});
 })
 
+// TODO:
 app.put('/qa/answers/:answer_id/report', (req, res) => {
-  console.log("PUT /qa/questions/:answer_id/report");
+  // console.log("PUT /qa/questions/:answer_id/report");
+  res.status(402).send("Not yet implemented.");
 })
 
 
@@ -89,9 +85,3 @@ function addAnswerMetaData(req, res, next) {
   req.body['helpfulness'] = 0;
   next();
 }
-
-// function cors(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "localhost"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// }
