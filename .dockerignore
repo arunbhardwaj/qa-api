@@ -21,9 +21,9 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 **/node_modules
-tests
 **random*
+client/src/config.js
 ./config.js
-postgres
-coverage
-# README.md
+postgres/
+tests/
+coverage/
