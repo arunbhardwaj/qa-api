@@ -12,8 +12,6 @@
 --
 -- ---
 
--- DROP TABLE IF EXISTS Questions CASCADE;
-
 CREATE TABLE Questions (
   id SERIAL NOT NULL PRIMARY KEY UNIQUE,
   question_body VARCHAR(1000) NOT NULL,
@@ -29,8 +27,6 @@ CREATE TABLE Questions (
 -- Table 'Answers'
 --
 -- ---
-
--- DROP TABLE IF EXISTS Answers CASCADE;
 
 CREATE TABLE Answers (
   id SERIAL NOT NULL PRIMARY KEY UNIQUE,
@@ -48,29 +44,16 @@ CREATE TABLE Answers (
 --
 -- ---
 
--- DROP TABLE IF EXISTS Photos CASCADE;
-
 CREATE TABLE Photos (
   id SERIAL NOT NULL PRIMARY KEY UNIQUE,
   url VARCHAR(500) NOT NULL,
   answer_id INTEGER NOT NULL
 );
--- ---
--- Table 'Products'
---
--- ---
-
--- DROP TABLE IF EXISTS Products CASCADE;
-
--- CREATE TABLE Products (
---   id SERIAL NOT NULL PRIMARY KEY UNIQUE
--- );
 
 -- ---
 -- Foreign Keys
 -- ---
 
--- ALTER TABLE Questions ADD FOREIGN KEY (product_id) REFERENCES Products (id);
 ALTER TABLE Answers ADD FOREIGN KEY (question_id) REFERENCES Questions (id);
 ALTER TABLE Photos ADD FOREIGN KEY (answer_id) REFERENCES Answers (id);
 
@@ -92,36 +75,3 @@ ALTER TABLE Photos ADD FOREIGN KEY (answer_id) REFERENCES Answers (id);
 -- ('','','','','','','','');
 -- INSERT INTO Products (id) VALUES
 -- ('');
-
-
-COPY Questions(id, product_id, question_body, question_date, asker_name, asker_email, reported, question_helpfulness)
-FROM '/mnt/c/Users/Arun/Documents/Hack reactor/sdc csvs/questions.csv'
-DELIMITER ','
-CSV HEADER;
-
-COPY Answers(id, question_id, body, date, answerer_name, answerer_email, reported, helpfulness)
-FROM '/mnt/c/Users/Arun/Documents/Hack reactor/sdc csvs/answers.csv'
-DELIMITER ','
-CSV HEADER;
-
-COPY Photos(id, answer_id, url)
-FROM '/mnt/c/Users/Arun/Documents/Hack reactor/sdc csvs/answers_photos.csv'
-DELIMITER ','
-CSV HEADER;
-
--- ---
--- Update the serial sequence counter
--- ---
-BEGIN;
--- protect against concurrent inserts while you update the counter
-LOCK TABLE Questions IN EXCLUSIVE MODE;
-LOCK TABLE Answers IN EXCLUSIVE MODE;
-LOCK TABLE Photos IN EXCLUSIVE MODE;
--- Update the sequence
-SELECT setval('questions_id_seq', COALESCE((SELECT MAX(id)+1 FROM Questions), 1), false);
-SELECT setval('answers_id_seq', COALESCE((SELECT MAX(id)+1 FROM Answers), 1), false);
-SELECT setval('photos_id_seq', COALESCE((SELECT MAX(id)+1 FROM Photos), 1), false);
-COMMIT;
-
-CREATE INDEX idx_product_id ON Questions(product_id);
-CREATE INDEX idx_question_id ON Answers(question_id);
