@@ -17,7 +17,7 @@ const QASection = ({productId}) => {
   }, [productId])
 
   useEffect(() => {
-    console.log(product_id)
+    console.log('in use effect on page load > productid:', productId)
     getAllQuestions(productId)
       .then(results => {
         setQuestions(results.data.results); // Already sorted by Question Helpfulness

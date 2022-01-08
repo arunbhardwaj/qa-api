@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  webserver:
+    image: haphnium/qa-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGHOST: db
+      PGDATABASE: qa
+      PGPORT: 5432
+      ISDOCKER: "true"
+    depends_on:
+      - db
+  db:
+    image: haphnium/qa-db
+    build:
+      context: ./postgres
+      dockerfile: ./Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: qa
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    expose:
+      - '5432'
+
+volumes:
+  pgdata:

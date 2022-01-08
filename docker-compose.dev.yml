@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  webserver:
+    volumes:
+      - ./:/usr/src/app:ro #bind mount
+        # path/on/local/machine:path/on/container
+      - /usr/src/app/node_modules
+    environment:
+      NODE_ENV: development
+    command: npm run server-dev

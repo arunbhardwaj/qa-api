@@ -1,18 +1,30 @@
 import axios from 'axios';
-import {API_KEY} from '../../config.js';
 
 const header = {
-  Authorization: API_KEY,
 };
 
-const HR_API = {
-  questions: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions'
-}
-
-
 const LOCAL_API = {
-  questions: 'https://localhost:3000/qa/questions'
+  questions: 'http://localhost:3000/qa/questions',
+  answers: 'http://localhost:3000/qa/answers',
+  // For Docker, it seems the request leaves the container and the host,
+  // so it has to reenter from the host side rather than the container side.
+  // E.g. client requests must go to localhost > port 3000
+  // and cannot go to webserver > 3000.
+  // Prior to this I was using 5000:3000 port forwarding
+  // and client had to connect to localhost > 5000 instead of > 3000.
 }
+
+const EC2_API = {
+  questions: 'http://ec2-3-82-220-49.compute-1.amazonaws.com/qa/questions',
+  answers: 'http://ec2-3-82-220-49.compute-1.amazonaws.com/qa/answers',
+}
+
+// CHANGE THIS TO CHANGE THE ENDPOINT OF ALL THE FUNCTIONS.
+const ENDPOINT = LOCAL_API;
+
+///////////////////////////////////////////////////////
+// Questions                               ////////////
+///////////////////////////////////////////////////////
 /**
  * Returns a promise that resolves to all questions for a given product.
  *
@@ -20,7 +32,9 @@ const LOCAL_API = {
  * @returns {Promise<any>} Promise object representing api results
  */
 export function getAllQuestions(productId) {
-  return axios.get(LOCAL_API.questions, {
+  return axios({
+    method: 'GET',
+    url: ENDPOINT.questions,
     headers: header,
     params: {
       product_id: productId
@@ -35,7 +49,10 @@ export function getAllQuestions(productId) {
  * @returns {Promise<any>} Promise object resolves to api results
  */
 export function postQuestion(data) {
-  return axios.post('https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/', data, {
+  return axios({
+    method: 'POST',
+    url: ENDPOINT.questions,
+    data: data,
     headers: header,
   })
 }
@@ -46,98 +63,26 @@ export function postQuestion(data) {
  * @returns
  */
 export function postAnswer(questionId, data) {
-  return axios.post(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/answers`, data, {
+  return axios({
+    method: 'POST',
+    url: `${ENDPOINT.questions}/${questionId}/answers`,
+    data: {...data, question_id: questionId},
     headers: header,
-    params: questionId
   })
 }
 
 export function updateQuestionHelpfulCount(questionId) {
-  return axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/questions/${questionId}/helpful`, {}, {
+  return axios({
+    method: 'PUT',
+    url: `${ENDPOINT.questions}/${questionId}/helpful`,
     headers: header
   })
 }
 
 export function updateAnswerHelpfulCount(answerId) {
-  return axios.put(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/qa/answers/${answerId}/helpful`, {}, {
-    headers: header
-  })
-}
-
-export function getProductReviewMeta(productId) {
-  const url = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/reviews/meta/?product_id=${productId}`
-  return axios.get(url, {
-    headers: header
-  })
-}
-
-export function getProductReviews(productId) {
-  const url = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/reviews/?sort="relevant"&product_id=${productId}&count=50`
-  return axios.get(url, {
-    headers: header
-  })
-}
-
-export function getSelectedSortByReviews(selected, productId) {
-  const url = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/reviews/?sort=${selected}&product_id=${productId}&count=50`
-  return axios.get(url, {
-    headers: header
-  })
-}
-
-export function postNewReview(data) {
-  const url = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/reviews`
-  return axios.post(url, data, {
-    headers: header
-  })
-}
-
-export function putReviewAsHelpful(reviewId) {
-  const url = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/reviews/${reviewId}/helpful`
-  return axios.put(url, {}, {
-    headers: header
-  })
-}
-export function getAllProducts() {
-  return axios.get('https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/products', {
-    headers: header,
-  })
-}
-
-export function getProductInfo(productId) {
-  return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/products/${productId}`, {
-    headers: header,
-  })
-}
-
-export function getProductStyles(productId) {
-  return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/products/${productId}/styles`, {
-    headers: header,
-  })
-}
-
-/**
- * Returns a promise resolving to a style object if styleId exists, or empty object if it does not exist.
- *
- * @param {number} productId
- * @param {number} styleId
- * @returns
- */
-export function getProductPhotosOfAStyle(productId, styleId) {
-  return axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/products/${productId}/styles`, {
-    headers: header,
-  })
-    .then((results) => results.data.results.reduce((result, style) => {
-      if (style.style_id === styleId) {
-        result = style;
-      }
-      return result;
-    }, {}));
-}
-
-export function getReviews(productId) {
-  const url = `https://app-hrsei-api.herokuapp.com/api/fec2/hr-nyc/reviews/?sort="relevant"&product_id=${productId}&count=50`
-  return axios.get(url, {
+  return axios({
+    method: 'PUT',
+    url: `${ENDPOINT.answers}/${answerId}/helpful`,
     headers: header
   })
 }
